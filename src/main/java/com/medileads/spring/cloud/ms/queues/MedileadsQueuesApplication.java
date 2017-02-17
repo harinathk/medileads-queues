@@ -9,15 +9,21 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+import com.medileads.spring.cloud.ms.queues.controller.DoctorController;
+import com.medileads.spring.cloud.ms.queues.entity.Doctor;
+
+//@RestController
 @SpringBootApplication
 @EnableDiscoveryClient
 public class MedileadsQueuesApplication implements CommandLineRunner{
 	private static List<Queue> queues = new ArrayList<>();
+	DoctorController dc = new DoctorController();
 
     public static void main(String[] args) {
         SpringApplication.run(MedileadsQueuesApplication.class, args);
@@ -39,6 +45,12 @@ public class MedileadsQueuesApplication implements CommandLineRunner{
 	public List<Queue> getQueues(@PathVariable String id) {
 		return queues.stream().filter(p -> p.getAppointments().contains(id)).collect(Collectors.toList());
 	}
+	
+	/*@GetMapping(path="/allDoctors")
+	public @ResponseBody Iterable<Doctor> getAllDoctors() {
+		//return doctorservice.getAllDoctors();
+		return dc.getAllDoctors();
+	}*/
 }
 
 class Queue {
